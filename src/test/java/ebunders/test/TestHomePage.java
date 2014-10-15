@@ -1,5 +1,7 @@
 package ebunders.test;
 
+import ebunders.test.web.application.WicketApplication;
+import ebunders.test.web.page.HomePage;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Before;
 import org.junit.Test;

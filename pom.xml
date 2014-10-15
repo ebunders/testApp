@@ -24,6 +24,7 @@
 	<artifactId>testapp</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
+
 		<!-- TODO project name  -->
 	<name>quickstart</name>
 	<description></description>
@@ -33,6 +34,7 @@
 			<url>company url</url>
 		</organization>
 	-->
+
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -41,11 +43,13 @@
 		</license>
 	</licenses>
 	<properties>
+        <spring.version>4.1.1.RELEASE</spring.version>
 		<wicket.version>6.17.0</wicket.version>
 		<jetty.version>7.6.13.v20130916</jetty.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- allowed values: R7, 1.0, 1.5, 2.0 or none -->
 		<wtp.version>none</wtp.version>
+        <hibernate.version>4.2.7.Final</hibernate.version>
 	</properties>
 	<dependencies>
 		<!--  WICKET DEPENDENCIES -->
@@ -62,7 +66,40 @@
 		</dependency>
 		-->
 
-		<!-- LOGGING DEPENDENCIES - LOG4J -->
+        <!-- SPRING DEPENDENCIES-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-ehcache</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+
+        <!-- LOGGING DEPENDENCIES - LOG4J -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
@@ -89,6 +126,14 @@
 			<version>${jetty.version}</version>
 			<scope>provided</scope>
 		</dependency>
+
+        <!-- UTILS -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>15.0</version>
+        </dependency>
+
 	</dependencies>
 	<build>
 		<resources>

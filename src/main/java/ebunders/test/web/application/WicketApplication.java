@@ -1,5 +1,6 @@
-package ebunders.test;
+package ebunders.test.web.application;
 
+import ebunders.test.web.page.HomePage;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.protocol.http.WebApplication;
 
