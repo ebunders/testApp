@@ -2,13 +2,19 @@ package ebunders.test.domain.project;
 
 import ebunders.test.common.entity.BaseEntity;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * Created by Ernst Bunders on 15-10-14.
  */
+@Entity
+@Table(name="project", uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public final class Project extends BaseEntity {
-    private String name;
+
+    @Column(nullable = false, unique = true)
+    private String name = "";
     private Date dueDate;
 
     public Project(String name, Date dueDate) {
@@ -18,6 +24,10 @@ public final class Project extends BaseEntity {
 
     public Project(String name) {
         this(name, null);
+    }
+
+    public Project() {
+
     }
 
     public String getName() {
@@ -43,8 +53,8 @@ public final class Project extends BaseEntity {
 
         Project project = (Project) o;
 
-        if (!dueDate.equals(project.dueDate)) return false;
-        if (!name.equals(project.name)) return false;
+        if (dueDate != null ? !dueDate.equals(project.dueDate) : project.dueDate != null) return false;
+        if (name != null ? !name.equals(project.name) : project.name!= null) return false;
 
         return getId().equals(project.getId());
     }

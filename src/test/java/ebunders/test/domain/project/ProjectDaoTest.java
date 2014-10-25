@@ -2,9 +2,11 @@ package ebunders.test.domain.project;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
+import ebunders.test.common.domain.InMemoryBaseDao;
 import ebunders.test.domain.BaseTest;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.Iterator;
@@ -12,23 +14,23 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class InMemoryProjectDaoTest extends BaseTest{
+public class ProjectDaoTest extends BaseTest{
 
-    private InMemoryProjectDao projectDao;
+    @Autowired
+    private ProjectDao projectDao;
 
     @Before
     public void setup(){
         projectDao = new InMemoryProjectDao();
-        InMemoryProjectDao.repository.clear();
+        if (InMemoryBaseDao.class.isAssignableFrom(projectDao.getClass())) {
+            ((InMemoryBaseDao)projectDao).clear();
+        }
     }
 
     @Test
     public void testProjectStoreAndGet(){
-        assertEquals("repo should be empty",InMemoryProjectDao.repository.size(), 0);
         Project p = new Project("foo", new Date());
         projectDao.saveOrUpdate(p);
-
-        assertEquals("instance should be stored", 1, InMemoryProjectDao.repository.size());
 
         List<Project> list = Lists.newArrayList(projectDao.getAll());
         assertEquals("there should be one project", 1, list.size());
@@ -40,7 +42,6 @@ public class InMemoryProjectDaoTest extends BaseTest{
 
     @Test
     public void testMultipleProjectsStoreAndGet() {
-        assertEquals("repo should be empty",InMemoryProjectDao.repository.size(), 0);
         Project p1 = new Project("foo", new Date()), p2 = new Project("bar", new Date()), p3 = new Project("fez", new Date());
         projectDao.saveOrUpdate(p1);
         projectDao.saveOrUpdate(p2);
@@ -56,20 +57,29 @@ public class InMemoryProjectDaoTest extends BaseTest{
 
     @Test
     public void testSaveOrUpdateShouldNotReplaceExistingVersion(){
-        assertEquals("repo should be empty",InMemoryProjectDao.repository.size(), 0);
         Project p1 = new Project("foo", new Date());
         projectDao.saveOrUpdate(p1);
 
         Project p2 = new Project("foo", new Date());
         projectDao.saveOrUpdate(p2);
-        assertEquals("there should be two projects", 2, InMemoryProjectDao.repository.size());
 
         p1.setName("foozle");
         projectDao.saveOrUpdate(p1);
-        assertEquals("there still should be two projects", 2, InMemoryProjectDao.repository.size());
 
         Project pr = projectDao.findById(p1.getId()).get();
         assertTrue("should be the same", pr == p1);
+
+    }
+
+    @Test
+    public void testDeleteProject(){
+        Project p1 = new Project("foo");
+        projectDao.saveOrUpdate(p1);
+
+        assertTrue(projectDao.findById(p1.getId()).isPresent());
+        projectDao.delete(p1);
+        assertFalse(projectDao.findById(p1.getId()).isPresent());
+
 
     }
 

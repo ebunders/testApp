@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+    <context:component-scan base-package="ebunders.test"/>
+
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!-- Override van hibernate-extension-spring voor het injecteren van de interceptor	-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties" ref="hibernateProperties"/>
+        <property name="packagesToScan" value="ebunders.test.domain"/>
+    </bean>
+
+    <bean id="hibernateProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="properties">
+        <util:map>
+            <entry key="hibernate.bytecode.use_reflection_optimizer" value="true"/>
+            <entry key="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
+            <entry key="hibernate.cache.region.factory_class"
+                   value="org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory"/>
+            <entry key="hibernate.cache.use_second_level_cache" value="true"/>
+            <entry key="hibernate.cache.use_query_cache" value="true"/>
+            <entry key="hibernate.cache.use_structured_entries" value="true"/>
+            <entry key="hibernate.default_schema" value="public"/>
+            <entry key="hibernate.hbm2ddl.auto" value="update"/>
+            <entry key="hibernate.generate_statistics" value="false"/>
+            <entry key="hibernate.show_sql" value="true"/>
+        </util:map>
+        </property>
+    </bean>
+
+    <!--<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource">-->
+        <!--<property name="driverClass" value="org.postgresql.Driver" />-->
+        <!--&lt;!&ndash; <property name="driverClass" value="com.p6spy.engine.spy.P6SpyDriver" /> &ndash;&gt;-->
+        <!--<property name="jdbcUrl"><jee:jndi-lookup jndi-name="localDatabaseJdbcUrl" /></property>-->
+        <!--<property name="username"><jee:jndi-lookup jndi-name="localDatabaseUser" /></property>-->
+        <!--<property name="password"><jee:jndi-lookup jndi-name="localDatabasePassword" /></property>-->
+        <!--<property name="idleMaxAgeInMinutes" value="240" />-->
+        <!--<property name="idleConnectionTestPeriodInMinutes" value="60" />-->
+        <!--<property name="partitionCount" value="2" />-->
+        <!--<property name="acquireIncrement" value="2" />-->
+        <!--<property name="poolAvailabilityThreshold" value="5" />-->
+        <!--<property name="maxConnectionsPerPartition" value="10" />-->
+        <!--<property name="minConnectionsPerPartition" value="2" />-->
+        <!--<property name="statementsCacheSize" value="50" />-->
+        <!--<property name="serviceOrder" value="LIFO" />-->
+    <!--</bean>-->
+    <!---->
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/testapp"/>
+        <property name="username" value="testapp"/>
+        <property name="password" value="testapp"/>
+    </bean>
+
+
+    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+        <!--<property name="driverClassName" value="org.hsqldb.jdbcDriver"/>-->
+        <!--<property name="url" value="jdbc:hsqldb:hsql://localhost/testdb"/>-->
+        <!--<property name="url" value="jdbc:hsqldb:mem:testdb"/>-->
+        <!--<property name="username" value="sa"/>-->
+        <!--<property name="password" value=""/>-->
+    <!--</bean>-->
+
+
+
+
+</beans>

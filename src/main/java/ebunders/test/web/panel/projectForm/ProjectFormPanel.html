@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:panel>
+    <div class="form" wicket:id="panel">
+        <span class="action" wicket:id="actionLabel">Add a Project:</span>
+        <div class="fields">
+            <form  class="form-inline" wicket:id="projectForm">
+                <fieldset>
+                    <label for="name">name</label>
+                    <input wicket:id="name" type="text" id="name" name="name" class="form-control"/>
+                    <label for="due">due (dd-mm-yyyy)</label>
+                    <input wicket:id="dueDate" type="text" maxlength="10" size="10" placeholder="dd-mm-yyyy" id="due" name="due" class="form-control"/>
+                    <button class="btn btn-primary" wicket:id="save"><wicket:container wicket:id="actionButtonLabel">add</wicket:container></button>
+                </fieldset>
+            </form>
+        </div>
+        <div class="clear"></div>
+    </div>
+</wicket:panel>
+</body>
+</html>

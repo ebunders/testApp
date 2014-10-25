@@ -11,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * Created by Ernst Bunders on 15-10-14.
  */
 public abstract class InMemoryBaseDao<T extends Identifiable> implements BaseDao<T>{
-    public static final Set<Identifiable> repository = new CopyOnWriteArraySet<Identifiable>();
+    private static final Set<Identifiable> repository = new CopyOnWriteArraySet<Identifiable>();
 
     private final Class clazz;
 
@@ -53,4 +53,22 @@ public abstract class InMemoryBaseDao<T extends Identifiable> implements BaseDao
         }
     }
 
+    @Override
+    public void delete(T entity) {
+        Optional<T> candidate = findById(entity.getId());
+        if (candidate.isPresent()) {
+            repository.remove(candidate.get());
+        }
+    }
+
+    @Override
+    public void deleteAll() {
+        for (Iterator<T> i = getAll(); i.hasNext(); ) {
+            delete(i.next());
+        }
+    }
+
+    public void clear(){
+        repository.clear();
+    }
 }

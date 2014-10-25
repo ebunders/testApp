@@ -3,18 +3,34 @@ package ebunders.test.domain.user;
 import ebunders.test.common.entity.BaseEntity;
 import ebunders.test.common.entity.Identifiable;
 import ebunders.test.domain.task.Task;
+import org.hibernate.annotations.Cascade;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
+
 /**
  * Created by Ernst Bunders on 15-10-14.
  */
+@Entity
+@Table(name="users")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public final class User extends BaseEntity {
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
     private String account;
+
+    @Column(nullable = false)
     private String passwd;
+
+    @OneToMany
+    @Cascade(SAVE_UPDATE)
+    @JoinColumn(name="id")
     private List<Task> tasks = new ArrayList<Task>();
 
     public User(String name, String account, String passwd) {

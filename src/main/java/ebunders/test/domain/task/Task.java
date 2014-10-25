@@ -2,23 +2,55 @@ package ebunders.test.domain.task;
 
 import ebunders.test.common.entity.BaseEntity;
 import ebunders.test.domain.project.Project;
+import javassist.compiler.ast.CastExpr;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+//import org.hibernate.metamodel.binding.InheritanceType;
 
+import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Date;
+
+import static org.hibernate.annotations.CascadeType.*;
 
 /**
  * Created by Ernst Bunders on 15-10-14.
  */
+@Entity
+@Table(name="tasks")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public final class Task extends BaseEntity {
-    private String name;
+
+    @Column(nullable = false)
+    private String name = "";
+
     private String description;
+
     private Date dueDate;
-    private boolean priority;
-    private boolean done;
+
+    @Column(nullable = false)
+    private boolean priority = false;
+
+    @Column(nullable = false)
+    private boolean done = false;
+
+    @OneToOne(optional = true)
+    @Cascade(SAVE_UPDATE)
+    @JoinColumn(name="id")
     private Project project;
+
+    public Task() { }
 
     public Task(String name, Date dueDate) {
         this.name = name;
         this.dueDate = dueDate;
+    }
+
+    public Task(String name, Date dueDate, Project project) {
+        this.name = name;
+        this.dueDate = dueDate;
+        this.project = project;
     }
 
     public String getName() {
@@ -60,6 +92,7 @@ public final class Task extends BaseEntity {
     public void setDone(boolean done) {
         this.done = done;
     }
+
 
     public Project getProject() {
         return project;

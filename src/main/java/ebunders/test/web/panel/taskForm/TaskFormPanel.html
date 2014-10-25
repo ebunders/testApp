@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:panel>
+    <div class="form" wicket:id="panel">
+        <span wicket:id="actionLabel" class="action">Add a Task:</span>
+
+        <div class="fields">
+            <form class="form-inline" wicket:id="taskForm">
+                <fieldset>
+                    <label for="name">name</label>
+                    <input type="text" wicket:id="name" id="name" name="name" class="form-control"/>
+
+                    <label for="name">description</label>
+                    <textarea wicket:id="description" rows="2" cols="20" id="description" name="description"
+                              class="form-control"></textarea>
+
+                    <label for="dueDate">due</label>
+                    <input type="text" wicket:id="dueDate" maxlength="10" size="10" placeholder="dd-mm-yyyy" id="dueDate" name="due"
+                           class="form-control"/>
+
+                    <label for="name">project</label>
+                    <select wicket:id="project" type="text" id="project" name="project" class="form-control">
+                        <option value="">-- --</option>
+                        <option value="pr-id-1">foo</option>
+                        <option value="pr-id-2">bar</option>
+                    </select>
+
+                    <label for="name">priority</label>
+                    <input wicket:id="priority" type="checkbox" id="priority" name="priority" class="form-control"/>
+
+                    <button wicket:id="save" class="btn btn-primary"><span wicket:id="actionButtonLabel">Add</span></button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</wicket:panel>
+</body>
+</html>

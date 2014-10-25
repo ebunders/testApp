@@ -11,6 +11,8 @@ import java.util.Iterator;
 public interface BaseDao<T extends Identifiable> {
 
     public Iterator<T> getAll();
-    public void saveOrUpdate(T entiry);
+    public void saveOrUpdate(T entity);
     public Optional<T> findById(String id);
+    public void delete(T entity);
+    public void deleteAll();
 }

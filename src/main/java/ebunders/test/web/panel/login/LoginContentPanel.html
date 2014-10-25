@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:panel>
+<div wicket:id="login">
+    <form class="form-inline" wicket:id="loginForm">
+        <label for="account">username:</label><input wicket:id="userName" id="account" type="text" name="account" class="form-control"/>
+        <label for="passwd">passwd:</label><input wicket:id="password" id="passwd" type="password" name="passwd" class="form-control"/>
+        <button class="btn btn-default" wicket:id="login">login</button>
+    </form>
+</div>
+    <div wicket:id="loggedIn">
+        <span wicket:id="userWelcome"><span wicket:id="welcomeMessage">Welkom Ernst Bunders</span><a href="#" wicket:id="logout">(logout)</a> </span>
+    </div>
+</wicket:panel>
+</body>
+</html>

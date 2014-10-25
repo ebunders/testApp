@@ -3,12 +3,16 @@ package ebunders.test.domain.project;
 import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import ebunders.test.common.domain.InMemoryBaseDao;
+import ebunders.test.domain.BaseTest;
 import ebunders.test.domain.task.InMemoryTaskDao;
 import ebunders.test.domain.task.Task;
+import ebunders.test.domain.task.TaskDao;
 import ebunders.test.domain.user.InMemoryUserDao;
 import ebunders.test.domain.user.User;
+import ebunders.test.domain.user.UserDao;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
 import java.util.List;
@@ -18,33 +22,35 @@ import static org.junit.Assert.*;
 /**
  * Created by Ernst Bunders on 15-10-14.
  */
-public class InMemoryUserDaoTest {
+public class UserDaoTest extends BaseTest{
 
-    private InMemoryUserDao userDao;
-    private InMemoryTaskDao taskDao;
-    private InMemoryProjectDao projectDao;
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private TaskDao taskDao;
+
+    @Autowired
+    private ProjectDao projectDao;
 
     @Before
     public void setup(){
-        projectDao = new InMemoryProjectDao();
-        taskDao = new InMemoryTaskDao(projectDao);
-        userDao = new InMemoryUserDao(taskDao);
-        InMemoryBaseDao.repository.clear();
+        if (InMemoryBaseDao.class.isAssignableFrom(projectDao.getClass())) {
+            ((InMemoryBaseDao)projectDao).clear();
+        }
     }
 
 
     @Test
     public void testSaveUser(){
-        assertEquals("repo should be empty",InMemoryProjectDao.repository.size(), 0);
         User user = new User("Ernst Bunders", "ernst", "secret");
         userDao.saveOrUpdate(user);
         userDao.saveOrUpdate(user);
-        assertEquals("one user should be stored", 1, InMemoryBaseDao.repository.size());
+        assertEquals(1, Lists.newArrayList(userDao.getAll()).size());
     }
 
     @Test
     public void testSaveUserWithTasks(){
-        assertEquals("repo should be empty",InMemoryProjectDao.repository.size(), 0);
         User user = new User("Ernst Bunders", "ernst", "secret");
         Project project = new Project("a project");
         Task t1 = new Task("foo", new Date());
@@ -55,7 +61,6 @@ public class InMemoryUserDaoTest {
         user.addTask(t2);
         userDao.saveOrUpdate(user);
 
-        assertEquals("four objects should be stored", 4, InMemoryBaseDao.repository.size());
         assertEquals("one project should be stored", 1, Lists.newArrayList(projectDao.getAll()).size());
         assertEquals("one user should be stored", 1, Lists.newArrayList(userDao.getAll()).size());
         assertEquals("twoo tasks should be stored", 2, Lists.newArrayList(taskDao.getAll()).size());

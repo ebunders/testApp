@@ -1,3 +1,4 @@
 .idea
 target
 *.iml
+front/bower_components
